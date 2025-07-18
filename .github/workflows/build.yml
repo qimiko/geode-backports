@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions
+    - uses: actions/checkout@v4
 
     - name: Setup Geode CLI
       uses: geode-sdk/cli/.github/actions/setup@main
