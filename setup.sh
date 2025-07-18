@@ -4,6 +4,11 @@ shopt -s nullglob
 
 for d in */
 do
+  if [ ! -f "$d/metadata" ]
+  then
+    continue
+  fi
+
   clone_url=$(sed -n "1p" "$d/metadata")
   commit_hash=$(sed -n "2p" "$d/metadata")
 
