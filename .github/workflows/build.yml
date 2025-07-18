@@ -44,11 +44,11 @@ jobs:
 
     - name: Setup subprojects
       shell: bash
-      run: ${{ github.workspace }}/setup.sh
+      run: "${GITHUB_WORKSPACE}/setup.sh"
 
     - name: Build subprojects
       shell: bash
-      run: ${{ github.workspace }}/build.sh
+      run: "${GITHUB_WORKSPACE}/build.sh"
       env:
         GEODE_SDK: ${{ github.workspace }}/geode-sdk-clone
 
