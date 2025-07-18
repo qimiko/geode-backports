@@ -1,0 +1,73 @@
+diff --git a/src/backend.cpp b/src/backend.cpp
+index cf94671..678d74e 100644
+--- a/src/backend.cpp
++++ b/src/backend.cpp
+@@ -337,10 +337,10 @@ class $modify(CCTouchDispatcher) {
+ };
+ 
+ class $modify(CCIMEDispatcher) {
+-    void dispatchInsertText(const char* text, int len, enumKeyCodes key) {
++    void dispatchInsertText(const char* text, int len) {
+         auto& io = ImGui::GetIO();
+         if (!io.WantCaptureKeyboard) {
+-            CCIMEDispatcher::dispatchInsertText(text, len, key);
++            CCIMEDispatcher::dispatchInsertText(text, len);
+         }
+         std::string str(text, len);
+         io.AddInputCharactersUTF8(str.c_str());
+diff --git a/src/main.cpp b/src/main.cpp
+index 9e2cd45..14c8b36 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -21,12 +21,12 @@ class $modify(CCNode) {
+ 
+ // todo: use shortcuts api once Geode has those
+ class $modify(CCKeyboardDispatcher) {
+-    bool dispatchKeyboardMSG(enumKeyCodes key, bool down, bool arr) {
++    bool dispatchKeyboardMSG(enumKeyCodes key, bool down) {
+         if (down && (key == KEY_F11 GEODE_MACOS(|| key == KEY_F10))) {
+             DevTools::get()->toggle();
+             return true;
+         }
+-        return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down, arr);
++        return CCKeyboardDispatcher::dispatchKeyboardMSG(key, down);
+     }
+ };
+ 
+diff --git a/src/pages/Attributes.cpp b/src/pages/Attributes.cpp
+index 5e983d4..7f6ccc5 100644
+--- a/src/pages/Attributes.cpp
++++ b/src/pages/Attributes.cpp
+@@ -321,10 +321,12 @@ void DevTools::drawMenuItemAttributes(CCNode* node) {
+             if (ImGui::Checkbox("Animation Enabled##menuitemanimationenabled", &animationEnabled)) {
+                 menuItemSpriteExtra->m_animationEnabled = animationEnabled;
+             }
++/*
+             float sizeMult = menuItemSpriteExtra->m_fSizeMult;
+             if (ImGui::DragFloat("Size Multiplier##menuitemsizemult", &sizeMult, .1f)) {
+                 menuItemSpriteExtra->setSizeMult(sizeMult);
+             }
++*/
+             float scaleMultiplier = menuItemSpriteExtra->m_scaleMultiplier;
+             if (ImGui::DragFloat("Scale Multipler##menuitemscalemultiplier", &scaleMultiplier, .03f)) {
+                 menuItemSpriteExtra->m_scaleMultiplier = scaleMultiplier;
+diff --git a/src/platform/Win32.cpp b/src/platform/Win32.cpp
+index 37725f0..dc42b95 100644
+--- a/src/platform/Win32.cpp
++++ b/src/platform/Win32.cpp
+@@ -39,12 +39,12 @@ class $modify(CCEGLView) {
+         CCEGLView::updateWindow(width, height);
+     }
+ 
+-    void toggleFullScreen(bool value, bool borderless, bool fix) {
++    void toggleFullScreen(bool value) {
+ 		if (!DevTools::get()->isSetup())
+-			return CCEGLView::toggleFullScreen(value, borderless, fix);
++			return CCEGLView::toggleFullScreen(value);
+ 
+ 		DevTools::get()->destroy();
+-		CCEGLView::toggleFullScreen(value, borderless, fix);
++		CCEGLView::toggleFullScreen(value);
+ 		DevTools::get()->setup();
+ 	}
+ 
