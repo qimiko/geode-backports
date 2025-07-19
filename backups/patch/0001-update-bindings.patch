@@ -1,0 +1,189 @@
+From fc2745ad5d13eb3d15a3bf818566ba5005549c79 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 17:15:20 -0700
+Subject: [PATCH] update bindings
+
+---
+ src/BackupsPopup.cpp | 39 ++++++++++++++++++++-------------------
+ src/ParseCC.cpp      |  2 +-
+ src/SaveToCloud.cpp  |  2 +-
+ src/main.cpp         |  2 +-
+ 4 files changed, 23 insertions(+), 22 deletions(-)
+
+diff --git a/src/BackupsPopup.cpp b/src/BackupsPopup.cpp
+index 05c3ce7..a056155 100644
+--- a/src/BackupsPopup.cpp
++++ b/src/BackupsPopup.cpp
+@@ -128,7 +128,7 @@ void BackupNode::onLoadInfo(Task<BackupInfo>::Event* event) {
+         icon->setColor(GameManager::get()->colorForIdx(info->playerColor1));
+         icon->setSecondColor(GameManager::get()->colorForIdx(info->playerColor2));
+         if (info->playerGlow) {
+-            icon->setGlowOutline(GameManager::get()->colorForIdx(*info->playerGlow));
++            icon->m_special = 2;
+         }
+         icon->setScale(.65f);
+         this->addChildAtPosition(icon, Anchor::Left, ccp(20, 5));
+@@ -202,7 +202,7 @@ void BackupNode::onInfo(CCObject*) {
+         );
+     }
+     else {
+-        FLAlertLayer::create("Backup Info", content, "OK")->show();
++        FLAlertLayer::create("Backup Info", content.c_str(), "OK")->show();
+     }
+ }
+ void BackupNode::onLevels(CCObject*) {
+@@ -217,7 +217,7 @@ void BackupNode::onLevels(CCObject*) {
+         }
+         text += fmt::format("<c{}>{}</c>", (i % 2 ? "y" : "o"), m_loadedLevelNames.at(i));
+     }
+-    FLAlertLayer::create("Levels in Backup", text, "OK")->show();
++    FLAlertLayer::create("Levels in Backup", text.c_str(), "OK")->show();
+ }
+ 
+ void BackupNode::setVisible(bool visible) {
+@@ -251,7 +251,7 @@ void BackupNode::onRestore(CCObject*) {
+ 	static bool TOGGLED = true;
+ 
+ 	auto toggle = CCMenuItemExt::createTogglerWithStandardSprites(1.5f, [](auto* toggle) {
+-		TOGGLED = !toggle->isToggled();
++		TOGGLED = !toggle->m_toggled;
+ 	});
+ 	auto popup = createQuickPopup(
+ 		"Restore Backup",
+@@ -263,12 +263,12 @@ void BackupNode::onRestore(CCObject*) {
+ 				if (TOGGLED) {
+ 					auto newRes = Backups::get()->createBackup(false);
+ 					if (!newRes) {
+-						return FLAlertLayer::create("Unable to Backup", newRes.unwrapErr(), "OK")->show();
++						return FLAlertLayer::create("Unable to Backup", newRes.unwrapErr().c_str(), "OK")->show();
+ 					}
+ 				}
+ 				auto res = self->m_backup->restoreBackup();
+ 				if (!res) {
+-					return FLAlertLayer::create("Unable to Restore", res.unwrapErr(), "OK")->show();
++					return FLAlertLayer::create("Unable to Restore", res.unwrapErr().c_str(), "OK")->show();
+ 				}
+ 				game::restart(false);
+ 			}
+@@ -298,7 +298,7 @@ void BackupNode::onDelete(CCObject*) {
+ 			if (btn2) {
+ 				auto res = self->m_backup->deleteBackup();
+ 				if (!res) {
+-					FLAlertLayer::create("Unable to Delete", res.unwrapErr(), "OK")->show();
++					FLAlertLayer::create("Unable to Delete", res.unwrapErr().c_str(), "OK")->show();
+ 				}
+ 				self->m_popup->reloadAll();
+ 			}
+@@ -307,7 +307,7 @@ void BackupNode::onDelete(CCObject*) {
+ }
+ 
+ bool BackupsPopup::setup() {
+-    m_noElasticity = true;
++    // m_noElasticity = true;
+ 
+     this->setTitle(fmt::format("Local Backups for {}", GameManager::get()->m_playerName));
+ 
+@@ -378,20 +378,21 @@ void BackupsPopup::onImportPicked(ImportTask::Event* ev) {
+     if (auto res = ev->getValue()) {
+         if (res->isOk()) {
+             auto [imported, failed] = Backups::get()->migrateAllFrom(**res);
++            auto msg = failed == 0 ?
++                fmt::format("Imported <cy>{}</c> backups", imported) :
++                fmt::format(
++                    "Imported <cy>{}</c> backups (<cr>{}</c> failed to import)",
++                    imported, failed
++            );
+             FLAlertLayer::create(
+                 "Imported backups",
+-                failed == 0 ?
+-                    fmt::format("Imported <cy>{}</c> backups", imported) :
+-                    fmt::format(
+-                        "Imported <cy>{}</c> backups (<cr>{}</c> failed to import)",
+-                        imported, failed
+-                    ),
++                msg.c_str(),
+                 "OK"
+             )->show();
+             this->reloadAll();
+         }
+         else {
+-            FLAlertLayer::create("Error importing backups", res->unwrapErr(), "OK")->show();
++            FLAlertLayer::create("Error importing backups", res->unwrapErr().c_str(), "OK")->show();
+         }
+     }
+ }
+@@ -416,12 +417,12 @@ void BackupsPopup::onNew(CCObject*) {
+         FLAlertLayer::create("Backed Up", "Backup has been created.", "OK")->show();
+     }
+     else {
+-        FLAlertLayer::create("Backup Failed", res.unwrapErr(), "OK")->show();
++        FLAlertLayer::create("Backup Failed", res.unwrapErr().c_str(), "OK")->show();
+     }
+     this->reloadAll();
+ }
+ void BackupsPopup::onPage(CCObject* sender) {
+-    this->gotoPage(m_page + sender->getTag());
++    this->gotoPage(m_page + static_cast<cocos2d::CCNode*>(sender)->getTag());
+ }
+ void BackupsPopup::onDirectory(CCObject*) {
+     file::openFolder(Backups::get()->getDirectory());
+@@ -429,7 +430,7 @@ void BackupsPopup::onDirectory(CCObject*) {
+ 
+ BackupsPopup* BackupsPopup::create() {
+     auto ret = new BackupsPopup();
+-    if (ret && ret->initAnchored(350, 260, "GJ_square05.png")) {
++    if (ret && ret->initAnchored(350, 260, "GJ_square01.png")) {
+         ret->autorelease();
+         return ret;
+     }
+@@ -447,7 +448,7 @@ void BackupsPopup::gotoPage(size_t page) {
+         auto node = CCNode::create();
+         node->setContentSize({ m_list->getContentWidth(), 30 });
+ 
+-        auto bg = CCScale9Sprite::create("square02b_001.png");
++        auto bg = CCScale9Sprite::create("square02_001.png");
+         bg->setScale(.3f);
+         bg->setContentSize(node->getContentSize() / bg->getScale());
+         bg->setColor(ccBLACK);
+diff --git a/src/ParseCC.cpp b/src/ParseCC.cpp
+index f80354e..20c97b1 100644
+--- a/src/ParseCC.cpp
++++ b/src/ParseCC.cpp
+@@ -14,7 +14,7 @@ Result<std::string> cc::parseCompressedCCFile(std::filesystem::path const& path,
+         return Ok("");
+     }
+     auto data = *readRes;
+-    return Ok(ZipUtils::decompressString2(data.data(), true, data.size(), 11));
++    return Ok(ZipUtils::decompressString2(data.data(), true, data.size()));
+ 
+     // auto readRes = file::readBinary(path);
+     // if (!readRes) {
+diff --git a/src/SaveToCloud.cpp b/src/SaveToCloud.cpp
+index 80980c9..c35ac18 100644
+--- a/src/SaveToCloud.cpp
++++ b/src/SaveToCloud.cpp
+@@ -9,7 +9,7 @@ class SaveToCloudPopup : public Popup<>, public GJAccountBackupDelegate {
+ protected:
+ 	bool setup() override {
+ 		this->setTitle("Saving to Cloud...");
+-		GJAccountManager::get()->m_backupDelegate = this;
++		GJAccountManager::sharedState()->m_backupDelegate = this;
+ 		// if (!GJAccountManager::get()->getAccountBackupURL()) {
+ 		// }
+ 		return true;
+diff --git a/src/main.cpp b/src/main.cpp
+index 5ac6c56..2a52446 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -85,7 +85,7 @@ class $modify(MenuLayer) {
+ 				false
+ 			);
+ 			alert->m_scene = this;
+-			alert->m_noElasticity = true;
++			// alert->m_noElasticity = true;
+ 			alert->show();
+ 		}
+ 
+-- 
+2.47.0.windows.1
+

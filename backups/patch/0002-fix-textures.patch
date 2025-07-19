@@ -1,0 +1,44 @@
+From 4a679de9fd8225d29bd7b7242b5c1abed916d338 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 17:16:41 -0700
+Subject: [PATCH] fix textures
+
+---
+ src/BackupsPopup.cpp | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/src/BackupsPopup.cpp b/src/BackupsPopup.cpp
+index a056155..77722be 100644
+--- a/src/BackupsPopup.cpp
++++ b/src/BackupsPopup.cpp
+@@ -60,7 +60,7 @@ bool BackupNode::init(BackupsPopup* popup, Ref<Backup> backup, float width) {
+     m_backup = backup;
+     this->setContentSize(ccp(width, 40));
+ 
+-    auto bg = CCScale9Sprite::create("square02b_001.png");
++    auto bg = CCScale9Sprite::create("square02_001.png");
+     bg->setScale(.3f);
+     bg->setContentSize(this->getContentSize() / bg->getScale());
+     bg->setColor(ccBLACK);
+@@ -95,7 +95,8 @@ bool BackupNode::init(BackupsPopup* popup, Ref<Backup> backup, float width) {
+     );
+     menu->addChild(restoreBtn);
+ 
+-    auto deleteSpr = CCSprite::createWithSpriteFrameName("GJ_resetBtn_001.png");
++    auto deleteSpr = CCSprite::createWithSpriteFrameName("GJ_deleteBtn_001.png");
++    deleteSpr->setScale(.55f);
+     auto deleteBtn = CCMenuItemSpriteExtra::create(
+         deleteSpr, this, menu_selector(BackupNode::onDelete)
+     );
+@@ -339,7 +340,7 @@ bool BackupsPopup::setup() {
+     m_mainLayer->addChildAtPosition(bottomMenu, Anchor::Bottom, ccp(0, 25));
+ 
+     auto openDirSpr = CircleButtonSprite::create(
+-        CCSprite::createWithSpriteFrameName("folderIcon_001.png")
++        CCSprite::createWithSpriteFrameName("geode.loader/folderIcon_001.png")
+     );
+     openDirSpr->setScale(.8f);
+     auto openDirBtn = CCMenuItemSpriteExtra::create(
+-- 
+2.47.0.windows.1
+

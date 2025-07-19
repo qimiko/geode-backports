@@ -10,7 +10,7 @@ mkdir "$outdir"
 
 for d in */
 do
-  if [! -d "$d/clone/" ]
+  if [ ! -d "$d/clone/" ]
   then
     continue
   fi

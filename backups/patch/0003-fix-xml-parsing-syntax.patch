@@ -1,0 +1,62 @@
+From 5770d911058a9b17107d58c6b80149861f30e77a Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 17:17:00 -0700
+Subject: [PATCH] fix xml parsing syntax
+
+---
+ src/Backup.cpp | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/src/Backup.cpp b/src/Backup.cpp
+index 422e5c6..79e06d2 100644
+--- a/src/Backup.cpp
++++ b/src/Backup.cpp
+@@ -137,29 +137,29 @@ Task<BackupInfo> Backup::loadInfo() {
+         pugi::xml_document ccgm;
+         if (ccgm.load_buffer(ccgmData.data(), ccgmData.size())) {
+             if (auto find = ccgm.select_single_node(
+-                "//k[normalize-space()=\"GS_value\"]/following-sibling::d/k[normalize-space()=\"6\"]/following-sibling::s"
++                "//key[normalize-space()=\"GS_value\"]/following-sibling::dict/key[normalize-space()=\"6\"]/following-sibling::string"
+             )) {
+                 info.starCount = find.node().text().as_int();
+             }
+             if (auto find = ccgm.select_single_node(
+-                "//k[normalize-space()=\"playerFrame\"]/following-sibling::i"
++                "//key[normalize-space()=\"playerFrame\"]/following-sibling::integer"
+             )) {
+                 info.playerIcon = find.node().text().as_int();
+             }
+             if (auto find = ccgm.select_single_node(
+-                "//k[normalize-space()=\"playerColor\"]/following-sibling::i"
++                "//key[normalize-space()=\"playerColor\"]/following-sibling::integer"
+             )) {
+                 info.playerColor1 = find.node().text().as_int();
+             }
+             if (auto find = ccgm.select_single_node(
+-                "//k[normalize-space()=\"playerColor2\"]/following-sibling::i"
++                "//key[normalize-space()=\"playerColor2\"]/following-sibling::integer"
+             )) {
+                 info.playerColor2 = find.node().text().as_int();
+             }
+-            if (ccgm.select_single_node(
+-                "//k[normalize-space()=\"playerGlow\"]/following-sibling::t"
++            if (auto find = ccgm.select_single_node(
++                "//key[normalize-space()=\"playerStreak\"]/following-sibling::integer"
+             )) {
+-                info.playerGlow = true;
++                info.playerGlow = find.node().text().as_int() == 2;
+             }
+         }
+ 
+@@ -172,7 +172,7 @@ Task<BackupInfo> Backup::loadInfo() {
+         pugi::xml_document ccll;
+         if (ccll.load_buffer(ccllData.data(), ccllData.size())) {
+             for (auto node : ccll
+-                .select_nodes("//k[normalize-space()=\"LLM_01\"]/following-sibling::d/d/k[normalize-space()=\"k2\"]/following-sibling::s[position()=1]")
++                .select_nodes("//key[normalize-space()=\"LLM_01\"]/following-sibling::dict/dict/key[normalize-space()=\"k2\"]/following-sibling::string[position()=1]")
+             ) {
+                 info.levels.push_back(node.node().text().as_string());
+             }
+-- 
+2.47.0.windows.1
+
