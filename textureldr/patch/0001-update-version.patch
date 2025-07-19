@@ -1,0 +1,38 @@
+From d59e671bae7263dcbb2e62146949eee892804144 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 18:39:44 -0700
+Subject: [PATCH] update version
+
+---
+ mod.json | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/mod.json b/mod.json
+index dddc3bd..180f03f 100644
+--- a/mod.json
++++ b/mod.json
+@@ -1,9 +1,9 @@
+ {
+-	"geode": "4.5.0",
++	"geode": "4.6.3",
+ 	"version": "v1.8.1",
+ 	"gd": {
+-		"win": "2.2074",
+-		"android": "2.2074",
++		"win": "1.920",
++		"android": "1.920",
+ 		"mac": "2.2074",
+ 		"ios": "2.2074"
+ 	},
+@@ -22,8 +22,5 @@
+ 	},
+ 	"api": {
+ 		"include": ["include/*.hpp"]
+-	},
+-	"dependencies": {
+-		"geode.node-ids": "1.20.1"
+ 	}
+ }
+-- 
+2.47.0.windows.1
+

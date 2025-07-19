@@ -1,0 +1,39 @@
+From e5ef93f00114c7dd48c37f4d0cd78417593a8e4e Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 18:41:32 -0700
+Subject: [PATCH] fix bindings
+
+---
+ src/PackManager.cpp     | 2 +-
+ src/PackSelectPopup.cpp | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/PackManager.cpp b/src/PackManager.cpp
+index 165c2d0..86234e6 100644
+--- a/src/PackManager.cpp
++++ b/src/PackManager.cpp
+@@ -120,7 +120,7 @@ void PackManager::updateAppliedPacks() {
+ 
+ void PackManager::applyPacks(CreateLayerFunc func) {
+     this->updateAppliedPacks();
+-    FMODAudioEngine::sharedEngine()->stopAllMusic(true);
++    GameSoundManager::sharedManager()->stopBackgroundMusic();
+     reloadTextures(std::move(func));
+ }
+ 
+diff --git a/src/PackSelectPopup.cpp b/src/PackSelectPopup.cpp
+index 9347000..4340234 100644
+--- a/src/PackSelectPopup.cpp
++++ b/src/PackSelectPopup.cpp
+@@ -39,7 +39,7 @@ static CCSize LAYER_SIZE = { 230.f, 210.f };
+ bool PackSelectPopup::init() {
+     if (!Popup<>::initAnchored(440.f, 290.f, "GJ_square01.png")) return false;
+ 
+-    GameManager::get()->fadeInMenuMusic();
++    GameManager::get()->fadeInMusic("menuLoop.mp3");
+ 
+     // just incase
+     Mod::get()->setSavedValue("shown-moved-alert", true);
+-- 
+2.47.0.windows.1
+

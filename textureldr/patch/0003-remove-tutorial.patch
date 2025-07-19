@@ -1,0 +1,64 @@
+From d1aaf17804ee00ac79942512c8aad80e7beb3a7a Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 18:40:38 -0700
+Subject: [PATCH] remove tutorial
+
+---
+ src/Tutorial.cpp | 4 +++-
+ src/Tutorial.hpp | 4 +++-
+ src/main.cpp     | 2 ++
+ 3 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/Tutorial.cpp b/src/Tutorial.cpp
+index 7d534e9..6d485c1 100644
+--- a/src/Tutorial.cpp
++++ b/src/Tutorial.cpp
+@@ -70,6 +70,7 @@ public:
+     }
+ };
+ 
++#if 0
+ void playNewLocationTutorial() {
+     auto* layer = MenuLayer::get();
+     if (!layer) return;
+@@ -147,4 +148,5 @@ void playNewLocationTutorial() {
+     auto* obj = MyObjWrapper<EventListener<Task<void>>>::create({});
+     obj->getValue().setFilter(task);
+     layer->setUserObject("tutorial"_spr, obj);
+-}
+\ No newline at end of file
++}
++#endif
+diff --git a/src/Tutorial.hpp b/src/Tutorial.hpp
+index 5906e71..cbe0596 100644
+--- a/src/Tutorial.hpp
++++ b/src/Tutorial.hpp
+@@ -1,3 +1,5 @@
+ #pragma once
+ 
+-void playNewLocationTutorial();
+\ No newline at end of file
++#if 0
++void playNewLocationTutorial();
++#endif
+diff --git a/src/main.cpp b/src/main.cpp
+index c697d5c..a55845a 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -76,6 +76,7 @@ class $modify(MyVideoOptionsLayer, VideoOptionsLayer) {
+     }
+ };
+ 
++#if 0
+ class $modify(MyMenuLayer, MenuLayer) {
+     bool init() {
+         if (!MenuLayer::init())
+@@ -126,4 +127,5 @@ class $modify(MyMenuLayer, MenuLayer) {
+         }
+     }
+ };
++#endif
+ 
+-- 
+2.47.0.windows.1
+

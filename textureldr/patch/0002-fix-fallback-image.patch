@@ -1,0 +1,50 @@
+From cd7da0a9bb7f6152841b626416dfced2a577142c Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 18:40:00 -0700
+Subject: [PATCH] fix fallback image
+
+---
+ src/Fallback.cpp | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/Fallback.cpp b/src/Fallback.cpp
+index b532583..96a7bc1 100644
+--- a/src/Fallback.cpp
++++ b/src/Fallback.cpp
+@@ -28,7 +28,7 @@ class $modify(CCSprite) {
+         auto* spriteFrame = CCSpriteFrameCache::get()->spriteFrameByName(name);
+ 
+         // we check for tag instead of the frame name because this is significantly better for performance
+-        bool needFallback = !spriteFrame || spriteFrame->getTag() == FALLBACK_TAG;
++        bool needFallback = !spriteFrame || static_cast<int>(spriteFrame->getObjType()) == FALLBACK_TAG;
+ 
+         if (!needFallback) {
+             return CCSprite::createWithSpriteFrame(spriteFrame);
+@@ -63,6 +63,7 @@ class $modify(CCSpriteFrameCache) {
+             return frame;
+         }
+ 
++#if 0
+         // this is stupid but rob intentionally doesnt load all icons at startup,
+         // probably to save memory, so do this to not use fallback on icons
+         static constexpr std::string_view prefixes[] = {
+@@ -81,6 +82,7 @@ class $modify(CCSpriteFrameCache) {
+                 return frame;
+             }
+         }
++#endif
+ 
+         // check if the fallback was already added
+         auto fallbackFrame = CCSpriteFrameCache::spriteFrameByName("fallback.png"_spr);
+@@ -92,7 +94,7 @@ class $modify(CCSpriteFrameCache) {
+         fallbackFrame = CCSpriteFrame::create("fallback.png"_spr, {ccp(0, 0), ccp(128, 128)});
+ 
+         if (fallbackFrame) {
+-            fallbackFrame->setTag(FALLBACK_TAG);
++            fallbackFrame->setObjType(static_cast<CCObjectType>(FALLBACK_TAG));
+             this->addSpriteFrame(fallbackFrame, "fallback.png"_spr);
+         }
+ 
+-- 
+2.47.0.windows.1
+

@@ -1,0 +1,57 @@
+From 25dbf0cc0cb1654df9ec4a70ba6e4a90357f3b06 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 18:41:23 -0700
+Subject: [PATCH] fix texture names
+
+---
+ src/PackNode.cpp        | 2 +-
+ src/PackSelectPopup.cpp | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/PackNode.cpp b/src/PackNode.cpp
+index 0b806f4..1b54a02 100644
+--- a/src/PackNode.cpp
++++ b/src/PackNode.cpp
+@@ -126,7 +126,7 @@ bool PackNode::init(
+     this->addChild(dragHandle);
+ 
+     m_draggingBg = CCScale9Sprite::create(
+-        "square02b_001.png"
++        "square02_001.png"
+     );
+     m_draggingBg->setCapInsets({10, 10, 50, 50});
+     m_draggingBg->setColor({ 0, 0, 0 });
+diff --git a/src/PackSelectPopup.cpp b/src/PackSelectPopup.cpp
+index e1d4ad0..9347000 100644
+--- a/src/PackSelectPopup.cpp
++++ b/src/PackSelectPopup.cpp
+@@ -84,7 +84,7 @@ bool PackSelectPopup::init() {
+     m_buttonMenu->addChild(applyBtn);
+ 
+     auto folderBtn = CCMenuItemSpriteExtra::create(
+-        CCSprite::createWithSpriteFrameName("gj_folderBtn_001.png"),
++        CCSprite::createWithSpriteFrameName("geode.loader/gj_folderBtn_001.png"),
+         this, menu_selector(PackSelectPopup::onOpenFolder)
+     );
+     folderBtn->setID("folder-button");
+@@ -106,7 +106,7 @@ bool PackSelectPopup::init() {
+     m_mainLayer->addChild(availableTitle);
+ 
+     auto availableListBG = CCScale9Sprite::create(
+-        "square02b_001.png", { 0, 0, 80, 80 }
++        "square02_001.png", { 0, 0, 80, 80 }
+     );
+     availableListBG->setColor({ 0, 0, 0 });
+     availableListBG->setOpacity(90);
+@@ -140,7 +140,7 @@ bool PackSelectPopup::init() {
+     m_mainLayer->addChild(appliedTitle);
+ 
+     auto appliedListBG = CCScale9Sprite::create(
+-        "square02b_001.png", { 0, 0, 80, 80 }
++        "square02_001.png", { 0, 0, 80, 80 }
+     );
+     appliedListBG->setColor({ 0, 0, 0 });
+     appliedListBG->setOpacity(90);
+-- 
+2.47.0.windows.1
+
