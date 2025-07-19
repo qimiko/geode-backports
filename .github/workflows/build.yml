@@ -51,6 +51,7 @@ jobs:
       run: "${GITHUB_WORKSPACE}/build.sh"
       env:
         GEODE_SDK: ${{ github.workspace }}/geode-sdk-clone
+        CPM_SOURCE_CACHE: ~/cpm-cache
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
