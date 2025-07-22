@@ -15,15 +15,9 @@ checkout_project () {
   rm -rf "$d/clone"
   git -c advice.detachedHead=false clone --revision=$commit_hash --depth=1 $clone_url "$d/clone/"
 
-  pushd "$d/clone/"
-  for p in ../patch/*.patch
-  do
-    filename=$(basename "$p")
-    echo "Apply patch $filename"
-    git apply $p    
-  done
-
-  popd
+  pushd "$d/clone/" > /dev/null
+  git am -3 "../patch/"*.patch --ignore-whitespace --ignore-space-change
+  popd > /dev/null
 }
 
 if [ $# -eq 0 ]

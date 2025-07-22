@@ -1,0 +1,23 @@
+From b310c953cfb23489eb02aa9dd42612e75666a073 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Mon, 21 Jul 2025 18:45:34 -0700
+Subject: [PATCH] update version
+
+---
+ mod.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mod.json b/mod.json
+index dbab282..1ff81c9 100644
+--- a/mod.json
++++ b/mod.json
+@@ -1,5 +1,5 @@
+ {
+-	"geode": "4.5.0",
++	"geode": "4.6.3",
+ 	"version": "v1.9.1",
+ 	"gd": {
+ 		"win": "*",
+-- 
+2.49.0
+

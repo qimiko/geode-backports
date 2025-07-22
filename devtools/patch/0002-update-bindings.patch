@@ -1,3 +1,15 @@
+From 2c729ccca70ebcf9cd2ce6700493739295b45018 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Mon, 21 Jul 2025 18:45:52 -0700
+Subject: [PATCH] update bindings
+
+---
+ src/backend.cpp          | 4 ++--
+ src/main.cpp             | 4 ++--
+ src/pages/Attributes.cpp | 2 ++
+ src/platform/Win32.cpp   | 6 +++---
+ 4 files changed, 9 insertions(+), 7 deletions(-)
+
 diff --git a/src/backend.cpp b/src/backend.cpp
 index cf94671..678d74e 100644
 --- a/src/backend.cpp
@@ -71,3 +83,6 @@ index 37725f0..dc42b95 100644
  		DevTools::get()->setup();
  	}
  
+-- 
+2.49.0
+
