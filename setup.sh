@@ -2,8 +2,8 @@
 
 shopt -s nullglob
 
-for d in */
-do
+checkout_project () {
+  d=$1
   if [ ! -f "$d/metadata" ]
   then
     continue
@@ -24,5 +24,14 @@ do
   done
 
   popd
-done
+}
 
+if [ $# -eq 0 ]
+then
+  for d in */
+  do
+    checkout_project $d
+  done
+else
+  checkout_project $1
+fi
