@@ -1,0 +1,35 @@
+From e8170fb49fdd0f3d40283f8c05982b0c8432e0c5 Mon Sep 17 00:00:00 2001
+From: Chloe <25387744+qimiko@users.noreply.github.com>
+Date: Mon, 21 Jul 2025 18:40:06 -0700
+Subject: [PATCH] hide record checkbox on mobile
+
+---
+ src/main.cpp | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/main.cpp b/src/main.cpp
+index c697d5c..0e34ac1 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -33,6 +33,18 @@ class $modify(MyOptionsLayer, OptionsLayer) {
+                 optionsMenu->insertAfter(textureLoaderBtn, optionsButton);
+             }
+ 
++            // causes overlap on mobile
++            if (auto recordLabel = m_mainLayer->getChildByID("record-replays-label")) {
++                recordLabel->setVisible(false);
++            }
++
++            if (auto recordCheckbox = m_mainLayer->getChildByIDRecursive("record-replays-toggle")) {
++                recordCheckbox->setVisible(false);
++            }
++
++            static_cast<RowLayout*>(optionsMenu->getLayout())
++                ->setAxisAlignment(AxisAlignment::Center);
++
+             optionsMenu->updateLayout();
+         }
+     }
+-- 
+2.49.0
+
