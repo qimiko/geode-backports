@@ -27,7 +27,7 @@ checkout_project () {
   then
     git am -3 "../patch/"*.patch --ignore-whitespace --ignore-space-change
   else
-    git apply "../patch"*.patch --ignore-whitespace --ignore-space-change
+    git apply "../patch/"*.patch --ignore-whitespace --ignore-space-change
   fi
   popd > /dev/null
 }
